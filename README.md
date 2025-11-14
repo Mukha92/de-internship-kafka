@@ -27,10 +27,10 @@
 ## 🚀 Быстрый старт
 
 ### 1. Клонирование репозитория
-   bash
+```bash
 git clone https://github.com/your-username/kafka-postgresql-clickhouse-pipeline.git](https://github.com/Mukha92/de-internship-kafka.git
 cd kafka-postgresql-clickhouse-pipeline
-
+```
 ### 1. Клонирование репозитория
    bash
 git clone https://github.com/your-username/kafka-postgresql-clickhouse-pipeline.git](https://github.com/Mukha92/de-internship-kafka.git
