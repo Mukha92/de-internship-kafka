@@ -22,3 +22,12 @@
 - **psycopg2** - драйвер для работы с PostgreSQL
 - **kafka-python** - клиент для работы с Kafka
 - **clickhouse-connect** - клиент для работы с ClickHouse
+
+- 
+## 🚀 Быстрый старт
+
+### 1. Клонирование репозитория
+```bash
+git clone https://github.com/your-username/kafka-postgresql-clickhouse-pipeline.git
+cd kafka-postgresql-clickhouse-pipeline
+
