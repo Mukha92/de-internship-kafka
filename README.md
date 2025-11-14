@@ -114,7 +114,7 @@ python -c "import psycopg2, kafka, clickhouse_connect; print('Все завис�
 #### Терминал 1 — Producer (PostgreSQL → Kafka)
 
 ```bash
-python producer_pg_to_kafka.py
+python producer.py
 ```
 
 Пример логов:
@@ -132,7 +132,7 @@ python producer_pg_to_kafka.py
 #### Терминал 2 — Consumer (Kafka → ClickHouse)
 
 ```bash
-python consumer_to_clickhouse.py
+python consumer.py
 ```
 
 Пример логов:
