@@ -31,7 +31,7 @@ de-internship-kafka/
 ├── 📄 README.md               # Документация проекта
 ├── 📄 docker-compose.yml      # Docker-инфраструктура 
 ├── 📄 requirements.txt        # Python-зависимости 
-├── 📄 config.py               # Конфигурация всех компонентов
+├── 📄 config.py               # Конфигурация компонентов
 ├── 📄 producer.py             # Producer: PostgreSQL → Kafka
 ├── 📄 consumer.py             # Consumer: Kafka → ClickHouse
 └── 📄 init.sql                # Инициализация PostgreSQL (таблица + тестовые записи)
@@ -89,7 +89,7 @@ SELECT * FROM user_logins LIMIT 5;
 
 ### 4. Установка Python-зависимостей
 
-```bash
+```
 python -m venv .venv
 
 # Linux/Mac
@@ -103,7 +103,7 @@ pip install -r requirements.txt
 
 Проверка:
 
-```bash
+```
 python -c "import psycopg2, kafka-python, clickhouse_connect; print('Все зависимости установлены')"
 ```
 
@@ -113,13 +113,13 @@ python -c "import psycopg2, kafka-python, clickhouse_connect; print('Все за
 
 #### Терминал 1 — Producer (PostgreSQL → Kafka)
 
-```bash
+```
 python producer.py
 ```
 
 Пример логов:
 
-```text
+```
 2025-11-14 22:44:57 - producer - INFO - Kafka producer успешно создан
 2025-11-14 22:44:57 - producer - INFO - Соединение с PostgreSQL установлено
 2025-11-14 22:44:57 - producer - INFO - Producer запущен
@@ -131,13 +131,13 @@ python producer.py
 
 #### Терминал 2 — Consumer (Kafka → ClickHouse)
 
-```bash
+```
 python consumer.py
 ```
 
 Пример логов:
 
-```text
+```
 2025-11-14 22:47:14 - consumer - INFO - Клиент ClickHouse успешно создан
 2025-11-14 22:47:14 - consumer - INFO - Таблица ClickHouse создана/проверена
 2025-11-14 22:47:14 - consumer - INFO - Kafka consumer создан, подписан на топик: user_events
@@ -154,14 +154,13 @@ python consumer.py
   
 - **PostgreSQL:** localhost:5432
 Проверка отправленных записей в PostgreSQL:
-```sql
+```
 SELECT COUNT(*) as sent_count FROM user_logins WHERE sent_to_kafka = true;
 -- Должно быть 52 после работы Producer
 ```
 - **ClickHouse:** localhost:8123
-Проверка данных в ClickHouse:
-```sql
--- Проверить общее количество записей
+Проверка полученных данных в ClickHouse:
+```
 SELECT COUNT(*) as total_records FROM user_logins;
 -- Должно быть 52 после работы Consumer
 ```
