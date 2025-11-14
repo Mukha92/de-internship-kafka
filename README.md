@@ -25,67 +25,82 @@
 
   
 
-🚀 Быстрый старт
+## 🚀 Быстрый старт
+
 1. Клонировать репозиторий
-bash
+
+```bash
 git clone https://github.com/Mukha92/de-internship-kafka.git
 cd de-internship-kafka
+```
+
 2. Запустить инфраструктуру
-bash
+
+```bash
 # Запуск всех сервисов в фоновом режиме
 docker-compose up -d
 
 # Проверить статус всех контейнеров
 docker-compose ps
-Ожидаемый результат: Должны быть запущены 5 сервисов:
+```
 
-✅ zookeeper - координатор для Kafka
+**Ожидаемый результат:** Должны быть запущены 5 сервисов:
 
-✅ kafka - брокер сообщений
-
-✅ postgres - база данных с исходными данными
-
-✅ clickhouse - аналитическая база данных
-
-✅ kafka-ui - веб-интерфейс для мониторинга Kafka (http://localhost:8080)
+- ✅ **zookeeper** — координатор для Kafka
+- ✅ **kafka** — брокер сообщений
+- ✅ **postgres** — база данных с исходными данными
+- ✅ **clickhouse** — аналитическая база данных
+- ✅ **kafka-ui** — веб-интерфейс для мониторинга Kafka (http://localhost:8080)
 
 Если какие-то сервисы не запустились:
 
-bash
+```bash
 # Просмотреть логи проблемного сервиса
 docker-compose logs kafka
 docker-compose logs postgres
 
 # Перезапустить конкретный сервис
 docker-compose restart kafka
+```
+
 3. Настройка PostgreSQL
-Через DBeaver:
+
+**Через DBeaver:**
+
 Создайте подключение:
 
-Host: localhost, Port: 5432
-
-Database: test_db, Username: admin, Password: admin
+```
+Host: localhost
+Port: 5432
+Database: test_db
+Username: admin
+Password: admin
+```
 
 Выполните SQL-скрипт:
 
-Откройте SQL Editor
-
-Скопируйте содержимое файла init.sql
-
-Выполните скрипт (Ctrl+Enter)
+1. Откройте SQL Editor
+2. Скопируйте содержимое файла `init.sql`
+3. Выполните скрипт (Ctrl+Enter)
 
 Проверьте данные:
 
-sql
+```sql
 SELECT COUNT(*) as record_count FROM user_logins;
 -- Должно быть 52 записи
 SELECT * FROM user_logins LIMIT 5;
 -- Должны отобразиться тестовые данные
-Альтернативно через командную строку:
-bash
+```
+
+**Альтернативно через командную строку:**
+
+```bash
 docker-compose exec postgres psql -U admin -d test_db -c "$(cat init.sql)"
+```
+
 4. Установка Python-зависимостей
-bash
+
+```bash
 # Создание виртуального окружения
 python -m venv .venv
 
@@ -97,40 +112,132 @@ source .venv/bin/activate
 
 # Установка зависимостей
 pip install -r requirements.txt
+```
+
 Проверьте установку:
 
-bash
+```bash
 python -c "import psycopg2, kafka, clickhouse_connect; print('Все зависимости установлены')"
+```
+
 5. Запуск сервисов приложения
-В терминале 1 - Consumer:
-bash
+
+**В терминале 1 — Consumer:**
+
+```bash
 python consumer_to_clickhouse.py
+```
+
 Ожидаемые логи:
 
-text
+```text
 ... - consumer_to_clickhouse - INFO - Consumer запущен
 ... - consumer_to_clickhouse - INFO - Вставка записи: ...
-В терминале 2 - Producer:
-bash
+```
+
+**В терминале 2 — Producer:**
+
+```bash
 python producer_pg_to_kafka.py
+```
+
 Ожидаемые логи:
 
-text
+```text
 ... - producer_pg_to_kafka - INFO - Producer запущен
 ... - producer_pg_to_kafka - INFO - Найдено 52 неотправленных записей
 ... - producer_pg_to_kafka - INFO - Обработана запись: ...
+```
+
 6. Мониторинг работы системы
-📊 Kafka UI - http://localhost:8080
-Топики: Убедитесь, что топик user_events содержит сообщения
 
-Consumer Groups: Проверьте статус группы clickhouse_consumer_group
+- **Kafka UI:** http://localhost:8080 — проверьте топик `user_events`, сообщения и группу `clickhouse_consumer_group`.
+- **PostgreSQL:** localhost:5432
 
-Messages: В реальном времени наблюдайте за потоком сообщений
+Проверка отправленных записей в PostgreSQL:
 
-🗄️ PostgreSQL - localhost:5432
-sql
--- Проверка отправленных записей
+```sql
 SELECT COUNT(*) as sent_count FROM user_logins WHERE sent_to_kafka = true;
 -- Должно быть 52 после работы Producer
+```
+
+
+## ✅ Проверка работоспособности пайплайна
+
+### 1. Проверка передачи данных через Kafka
+
+```bash
+# В реальном времени следить за сообщениями в Kafka
+docker-compose exec kafka kafka-console-consumer \
+  --bootstrap-server localhost:9092 \
+  --topic user_events \
+  --property print.key=true \
+  --property print.value=true \
+  --from-beginning
+```
+
+Должны отображаться JSON-сообщения в формате:
+
+```json
+{
+  "id": 1,
+  "character_name": "Шерлок Холмс",
+  "username": "sherlock",
+  "event_type": "registration",
+  "timestamp": 1762798313.27121
+}
+```
+
+
+### 2. Проверка данных в ClickHouse
+
+**Через DBeaver:**
+
+```sql
+-- Проверить общее количество записей
+SELECT COUNT(*) as total_records FROM user_logins;
+
+-- Просмотреть последние 10 записей
+SELECT * FROM user_logins
+ORDER BY event_time DESC
+LIMIT 10;
+
+-- Статистика по типам событий
+SELECT event_type, COUNT(*) as count
+FROM user_logins
+GROUP BY event_type
+ORDER BY count DESC;
+```
+
+**Через командную строку:**
+
+```bash
+docker-compose exec clickhouse clickhouse-client \
+  --user user \
+  --password strongpassword \
+  --query "SELECT COUNT(*) FROM user_logins"
+```
+
+
+### 3. Проверка обновления флагов в PostgreSQL
+
+**Через DBeaver:**
+
+```sql
+-- Проверить сколько записей обработано
+SELECT
+  COUNT(*) as total,
+  SUM(CASE WHEN sent_to_kafka THEN 1 ELSE 0 END) as sent,
+  SUM(CASE WHEN NOT sent_to_kafka THEN 1 ELSE 0 END) as not_sent
+FROM user_logins;
+
+-- После работы Producer все записи должны быть sent_to_kafka = TRUE
+SELECT COUNT(*) as unsent_count
+FROM user_logins
+WHERE sent_to_kafka = FALSE;
+```
+
+
+---
 
 
