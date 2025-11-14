@@ -47,3 +47,49 @@ kafka
 postgres
 clickhouse
 kafka-ui
+
+## 🚀 Быстрый старт
+
+### 1. Клонирование репозитория
+```bash
+git clone https://github.com/your-username/kafka-postgresql-clickhouse-pipeline.git
+cd kafka-postgresql-clickhouse-pipeline
+2. Запуск инфраструктуры
+bash
+docker-compose up -d
+Дождитесь полного запуска всех контейнеров (2-3 минуты). Проверьте статус:
+
+bash
+docker-compose ps
+Должны быть запущены 4 сервиса:
+
+zookeeper
+
+kafka
+
+postgres
+
+clickhouse
+
+3. Настройка PostgreSQL через DBeaver
+Установка DBeaver (если не установлен)
+Скачайте с официального сайта: https://dbeaver.io/download/
+
+Установите версию Community (бесплатная)
+
+Подключение к PostgreSQL:
+Создайте новое подключение в DBeaver:
+
+Нажмите Database → New Database Connection
+
+Выберите PostgreSQL → Next
+
+Настройте параметры подключения:
+
+text
+Host: localhost
+Port: 5432
+Database: test_db
+Username: admin
+Password: admin
+Тестирование подключения:
