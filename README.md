@@ -28,6 +28,11 @@
 
 ### 1. Клонирование репозитория
 ```bash
-git clone https://github.com/your-username/kafka-postgresql-clickhouse-pipeline.git
+git clone https://github.com/your-username/kafka-postgresql-clickhouse-pipeline.git](https://github.com/Mukha92/de-internship-kafka.git
 cd kafka-postgresql-clickhouse-pipeline
+
+### 2. Запуск инфраструктуры
+```bash
+docker-compose up -d
+
 
