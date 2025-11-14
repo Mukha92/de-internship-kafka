@@ -153,7 +153,7 @@ python producer_pg_to_kafka.py
 6. Мониторинг работы системы
 
 - **Kafka UI:** http://localhost:8080 — проверьте топик `user_events`, сообщения и группу `clickhouse_consumer_group`.
-- 
+  
 - **PostgreSQL:** localhost:5432
 - 
 Проверка отправленных записей в PostgreSQL:
@@ -169,6 +169,134 @@ SELECT COUNT(*) as sent_count FROM user_logins WHERE sent_to_kafka = true;
 SELECT COUNT(*) as total_records FROM user_logins;
 -- Должно быть 52 после работы Consumer
 ```
+
+## 🚀 Быстрый старт
+
+### 1. Клонирование репозитория
+
+```bash
+git clone https://github.com/Mukha92/de-internship-kafka.git
+cd de-internship-kafka
+```
+
+---
+
+### 2. Запуск инфраструктуры
+
+```bash
+docker-compose up -d
+docker-compose ps
+```
+
+Ожидаемые сервисы:
+
+- ✅ zookeeper  
+- ✅ kafka  
+- ✅ postgres  
+- ✅ clickhouse  
+- ✅ kafka-ui → http://localhost:8080  
+
+Если что-то не запустилось:
+
+```bash
+docker-compose logs kafka
+docker-compose logs postgres
+docker-compose restart kafka
+```
+
+---
+
+### 3. Настройка PostgreSQL (DBeaver)
+
+Создайте новое подключение:
+
+```
+Host: localhost
+Port: 5432
+Database: test_db
+Username: admin
+Password: admin
+```
+
+Выполните SQL-скрипт `init.sql`, затем проверьте данные:
+
+```sql
+SELECT COUNT(*) FROM user_logins;
+SELECT * FROM user_logins LIMIT 5;
+```
+
+---
+
+### 4. Установка Python-зависимостей
+
+```bash
+python -m venv .venv
+
+# Linux/Mac
+source .venv/bin/activate
+
+# Windows
+.venv\Scripts\activate
+
+pip install -r requirements.txt
+```
+
+Проверка:
+
+```bash
+python -c "import psycopg2, kafka, clickhouse_connect; print('Все зависимости установлены')"
+```
+
+---
+
+### 5. Запуск приложения
+
+#### Терминал 1 — Producer (PostgreSQL → Kafka)
+
+```bash
+python producer_pg_to_kafka.py
+```
+
+Пример логов:
+
+```
+INFO - Найдено 52 неотправленных записей
+INFO - Отправлено 52 записей
+```
+
+#### Терминал 2 — Consumer (Kafka → ClickHouse)
+
+```bash
+python consumer_to_clickhouse.py
+```
+
+Пример логов:
+
+```
+INFO - Вставка записи: Шерлок Холмс - registration
+```
+
+---
+
+## 📊 Мониторинг системы
+
+### Kafka UI  
+http://localhost:8080  
+Проверьте:
+- топик `user_events`,
+- consumer group `clickhouse_consumer_group`.
+
+---
+
+### PostgreSQL (localhost:5432)
+
+Проверка отправленных записей:
+
+```sql
+SELECT COUNT(*) FROM user_logins WHERE sent_to_kafka = true;
+```
+
+---
 
 
 
