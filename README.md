@@ -92,13 +92,7 @@ SELECT * FROM user_logins LIMIT 5;
 -- Должны отобразиться тестовые данные
 ```
 
-Альтернативно через командную строку:
-
-```bash
-docker-compose exec postgres psql -U admin -d test_db -c "$(cat init.sql)"
-```
-
-4. Установка Python-зависимостей
+4. Установка виртуального окружения и Python-зависимостей
 
 ```bash
 # Создание виртуального окружения
@@ -122,7 +116,7 @@ python -c "import psycopg2, kafka, clickhouse_connect; print('Все завис�
 
 5. Запуск сервисов приложения
 
-В терминале 1 — Consumer:
+В терминале 1 — Producer:
 
 ```bash
 python consumer_to_clickhouse.py
@@ -131,11 +125,16 @@ python consumer_to_clickhouse.py
 Ожидаемые логи:
 
 ```text
-... - consumer_to_clickhouse - INFO - Consumer запущен
-... - consumer_to_clickhouse - INFO - Вставка записи: ...
+2025-11-14 22:44:57 - producer - INFO - Kafka producer успешно создан
+2025-11-14 22:44:57 - producer - INFO - Соединение с PostgreSQL установлено
+2025-11-14 22:44:57 - producer - INFO - Producer запущен
+2025-11-14 22:45:02 - producer - INFO - Найдено 52 неотправленных записей
+2025-11-14 22:45:02 - producer - INFO - Обработана запись: Шерлок Холмс - registration
+............................
+2025-11-14 22:45:02 - producer - INFO - Отправлено 52 записей
 ```
 
-В терминале 2 — Producer:
+В терминале 2 — Consumer:
 
 ```bash
 python producer_pg_to_kafka.py
@@ -144,17 +143,21 @@ python producer_pg_to_kafka.py
 Ожидаемые логи:
 
 ```text
-... - producer_pg_to_kafka - INFO - Producer запущен
-... - producer_pg_to_kafka - INFO - Найдено 52 неотправленных записей
-... - producer_pg_to_kafka - INFO - Обработана запись: ...
+2025-11-14 22:47:14 - consumer - INFO - Клиент ClickHouse успешно создан
+2025-11-14 22:47:14 - consumer - INFO - Таблица ClickHouse создана/проверена
+2025-11-14 22:47:14 - consumer - INFO - Kafka consumer создан, подписан на топик: user_events
+2025-11-14 22:47:14 - consumer - INFO - Consumer запущен
+2025-11-14 22:47:18 - consumer - INFO - Вставка записи: Шерлок Холмс - registration
+...............................
 ```
 
 6. Мониторинг работы системы
 
 - **Kafka UI:** http://localhost:8080 — проверьте топик `user_events`, сообщения и группу `clickhouse_consumer_group`.
+- 
 - **PostgreSQL:** localhost:5432
+- 
 Проверка отправленных записей в PostgreSQL:
-
 ```sql
 SELECT COUNT(*) as sent_count FROM user_logins WHERE sent_to_kafka = true;
 -- Должно быть 52 после работы Producer
@@ -162,10 +165,11 @@ SELECT COUNT(*) as sent_count FROM user_logins WHERE sent_to_kafka = true;
 - **ClickHouse:** localhost:8123
 - 
 Проверка данных в ClickHouse:
-
+```sql
 -- Проверить общее количество записей
 SELECT COUNT(*) as total_records FROM user_logins;
 -- Должно быть 52 после работы Consumer
+```
 
 
 
