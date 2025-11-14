@@ -24,19 +24,19 @@
 - **clickhouse-connect** - клиент для работы с ClickHouse
 
 - 
-# 🚀 Быстрый старт
+## 🚀 Быстрый старт
 
-## 1. Клонирование репозитория
+### 1. Клонирование репозитория
 ```bash
 git clone https://github.com/your-username/kafka-postgresql-clickhouse-pipeline.git](https://github.com/Mukha92/de-internship-kafka.git
 cd kafka-postgresql-clickhouse-pipeline
 ```
-## 2. Запуск инфраструктуры
+### 2. Запуск инфраструктуры
 ```bash
 docker-compose up -d
 ```
 
-## 3. Проверка статуса контейнеров
+### 3. Проверка статуса контейнеров
 ```bash
 docker-compose ps
 ```
