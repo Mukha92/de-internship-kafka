@@ -24,6 +24,8 @@
 - **clickhouse-connect** - клиент для работы с ClickHouse
 
 ## 📁 Структура проекта
+
+```
 de-internship-kafka/
 ├── 📄 .gitignore              # Игнорируемые файлы 
 ├── 📄 README.md               # Документация проекта
@@ -33,17 +35,7 @@ de-internship-kafka/
 ├── 📄 producer.py             # Producer: PostgreSQL → Kafka
 ├── 📄 consumer.py             # Consumer: Kafka → ClickHouse
 └── 📄 init.sql                # Инициализация PostgreSQL (таблица + тестовые записи)
-
-de-internship-kafka/
-├── 📄 .gitignore                # Игнорируемые файлы
-├── 📄 README.md                 # Основная документация проекта
-├── 📄 docker-compose.yml        # Docker-инфраструктура
-├── 📄 requirements.txt          # Python-зависимости
-├── 📄 config.py                 # Конфигурация всех компонентов
-├── 📄 producer.py               # Producer: PostgreSQL → Kafka
-├── 📄 consumer.py               # Consumer: Kafka → ClickHouse
-└── 📄 init.sql                  # Инициализация PostgreSQL (таблица + тестовые записи)
-
+```
 
 
 ## 🚀 Быстрый старт
