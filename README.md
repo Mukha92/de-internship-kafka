@@ -29,18 +29,27 @@
 
 1. Клонировать репозиторий:
 ```bash
-git clone https://github.com/your-username/kafka-postgresql-clickhouse-pipeline.git
-cd kafka-postgresql-clickhouse-pipeline
+git clone https://github.com/Mukha92/de-internship-kafka.git
+cd de-internship-kafka
 ```
 
 2. Запустить инфраструктуру:
 ```bash
+# Запуск всех сервисов в фоновом режиме
 docker-compose up -d
+
+# Проверить статус всех контейнеров
 docker-compose ps
 ```
-(сервисы: zookeeper, kafka, postgres, clickhouse, kafka-ui)
+Ожидаемый результат: Должны быть запущены 5 сервисов:
 
-3. Выполнить `init.sql` в PostgreSQL (DBeaver или `psql`) и проверить, что есть записи.
+✅ zookeeper - координатор для Kafka
+✅ kafka - брокер сообщений
+✅ postgres - база данных с исходными данными
+✅ clickhouse - аналитическая база данных
+✅ kafka-ui - веб-интерфейс для мониторинга Kafka (http://localhost:8080)
+
+3. Выполнить `init.sql` в PostgreSQL (DBeaver) и проверить, что есть записи.
 
 4. Установить Python-зависимости:
 ```bash
@@ -50,11 +59,12 @@ pip install -r requirements.txt
 ```
 
 5. Запустить сервисы приложения:
-- Producer: `python producer_pg_to_kafka.py`
-- Consumer: `python consumer_to_clickhouse.py`
+- Producer: `python producer`
+- Consumer: `python consumer`
 
 6. Мониторинг:
+- PostgreSQL: порт 5432
 - Kafka UI: http://localhost:8080
 - ClickHouse: порт 8123
-- PostgreSQL: порт 5432
+
 
