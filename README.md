@@ -39,7 +39,7 @@ docker-compose up -d
 ## 3. Проверка статуса контейнеров
 ```bash
 docker-compose ps
-bash```
+```
 
 Должны быть запущены 5 контейнеров:
 zookeeper
