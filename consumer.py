@@ -108,12 +108,15 @@ def prepare_clickhouse_data(message_data: dict) -> list:
     Returns:
         Данные в формате для вставки в ClickHouse
     """
+  # Это гарантирует одинаковое время в PostgreSQL и ClickHouse
+    event_datetime = datetime.utcfromtimestamp(message_data['timestamp'])
+
     return [
         message_data['id'],
         message_data['character_name'],
         message_data['username'],
         message_data['event_type'],
-        datetime.fromtimestamp(message_data['timestamp'])
+        event_datetime
     ]
 
 
