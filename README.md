@@ -171,6 +171,16 @@ SELECT COUNT(*) as total_records FROM user_logins;
 -- Должно быть 52 после работы Consumer
 ```
 
+## 🛠️ Технологический стек
 
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
+![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?logo=apachekafka&logoColor=white)
+![ClickHouse](https://img.shields.io/badge/ClickHouse-FFCC01?logo=clickhouse&logoColor=black)
+![Kafka UI](https://img.shields.io/badge/Kafka_UI-000000?logo=apachekafka&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
+![psycopg2](https://img.shields.io/badge/psycopg2-4169E1?logo=postgresql&logoColor=white)
+![kafka-python](https://img.shields.io/badge/kafka--python-231F20?logo=apachekafka&logoColor=white)
+![clickhouse-connect](https://img.shields.io/badge/clickhouse--connect-FFCC01?logo=clickhouse&logoColor=black)
 
 
