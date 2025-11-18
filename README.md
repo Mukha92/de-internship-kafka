@@ -18,15 +18,12 @@
 - **Обработка исключений:** комплексная система обработки ошибок с повторными попытками и логированием
 
 ## 🛠️ Технологический стек
-- **PostgreSQL** - реляционная база данных 
-- **Apache Kafka** - брокер сообщений 
-- **ClickHouse** - колоночная база данных для аналитики
-- **Kafka UI** - веб-интерфейс для мониторинга кластера Kafka
-- **Python** - язык реализации пайплайна
-- **Docker** - контейнеризация инфраструктуры
-- **psycopg2** - драйвер для работы с PostgreSQL
-- **kafka-python** - клиент для работы с Kafka
-- **clickhouse-connect** - клиент для работы с ClickHouse
+
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?logo=apachekafka&logoColor=white)](https://kafka.apache.org/)
+[![ClickHouse](https://img.shields.io/badge/ClickHouse-FFCC01?logo=clickhouse&logoColor=black)](https://clickhouse.com/)
+[![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)](https://python.org/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://docker.com/)
   
 
 ## 📁 Структура проекта
@@ -171,24 +168,3 @@ SELECT COUNT(*) as total_records FROM user_logins;
 -- Должно быть 52 после работы Consumer
 ```
 
-## 🛠️ Технологический стек
-
-## 🛠️ Технологический стек
-
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-
-[![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?logo=apachekafka&logoColor=white)](https://kafka.apache.org/)
-
-[![ClickHouse](https://img.shields.io/badge/ClickHouse-FFCC01?logo=clickhouse&logoColor=black)](https://clickhouse.com/)
-
-[![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)](https://python.org/)
-
-[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://docker.com/)
-
-## 🛠️ Технологический стек
-
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?logo=apachekafka&logoColor=white)](https://kafka.apache.org/)
-[![ClickHouse](https://img.shields.io/badge/ClickHouse-FFCC01?logo=clickhouse&logoColor=black)](https://clickhouse.com/)
-[![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)](https://python.org/)
-[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://docker.com/)
